@@ -2,8 +2,10 @@ import toast from "react-hot-toast";
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { getGlobalLoadingSetter } from "../utils/loadingBridge";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 const API = axios.create({
-  baseURL: "http://localhost:8000", // adjust if needed
+  baseURL: API_URL
 });
 
 /* -------------------- REQUEST INTERCEPTOR -------------------- */

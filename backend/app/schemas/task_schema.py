@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
-from app.schemas.user import UserOut
+from backend.app.schemas.user_schema import UserOut
 from typing import List
 from app.database.models import TaskStatus
 

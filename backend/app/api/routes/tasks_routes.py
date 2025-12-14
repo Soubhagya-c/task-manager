@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.session import get_db
 from app.database.models import Task
-from app.schemas.task import TaskCreate, PaginatedTasks, TaskListResponse
+from backend.app.schemas.task_schema import TaskCreate, PaginatedTasks, TaskListResponse
 from app.dependencies import get_current_user
 from app.utils.response import success_response
 from fastapi import Query
