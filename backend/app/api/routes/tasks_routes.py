@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.session import get_db
 from app.database.models import Task
-from backend.app.schemas.task_schema import TaskCreate, PaginatedTasks, TaskListResponse
+from app.schemas.task_schema import TaskCreate, PaginatedTasks, TaskListResponse
 from app.dependencies import get_current_user
 from app.utils.response import success_response
 from fastapi import Query
@@ -25,21 +25,17 @@ def get_tasks(
     user=Depends(get_current_user),
     page: int = Query(1, ge=1),
     limit: int = Query(3, ge=1, le=50),
-    status: Optional[str] = None
+    status: Optional[str] = None,
+    includeDeleted: bool = Query(False)
 ):
+    query = db.query(Task).filter(Task.owner_id == user.id)
+    # Apply status filter if provided
     if status:
-        query = (
-            db.query(Task)
-            .filter(Task.owner_id == user.id)
-            .filter(Task.status == status)
-            .filter(Task.is_deleted == False)
-        )
-    else:
-        query = (
-            db.query(Task)
-            .filter(Task.owner_id == user.id)
-            .filter(Task.is_deleted == False)
-        )
+        query = query.filter(Task.status == status)
+    
+    # Apply is_deleted filter only if includeDeleted is False
+    if not includeDeleted:
+        query = query.filter(Task.is_deleted == False)
     
     query = query.order_by(Task.created_at.desc())
 

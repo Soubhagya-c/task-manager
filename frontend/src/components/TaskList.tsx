@@ -15,22 +15,27 @@ interface TaskListProps {
   onRestore: (id: number) => void;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, onEdit, onDelete, onRestore }) => {
+const TaskList: React.FC<TaskListProps> = ({
+  tasks,
+  onEdit,
+  onDelete,
+  onRestore,
+}) => {
   return (
     <div className="space-y-4">
       {tasks.map((task) => (
         <div
           key={task.id}
-          className="bg-white p-4 rounded shadow flex justify-between items-center"
+          className={`p-4 rounded shadow flex justify-between items-center ${
+            task.status === "completed" ? "bg-green-200" : "bg-white"
+          }`}
         >
           <div>
             <h3 className="font-bold">{task.title}</h3>
             <p className={task.is_deleted ? "line-through text-gray-400" : ""}>
               {task.description}
             </p>
-            <p className={task.status === "completed" ? "line-through" : ""}>
-              {task.status}
-            </p>
+            <p>{task.status}</p>
           </div>
           <div className="space-x-2">
             {!task.is_deleted ? (

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { getErrorMessage } from "../utils/handleApiError";
 import Navbar from "../components/Navbar";
+import { showSuccess } from "../utils/toast";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function Register() {
 
     try {
       await registerUser({ name, email, password });
-      alert("Registration successful");
+      showSuccess("Registration successful");
       navigate("/login");
     } catch (err: unknown) {
       if (err instanceof AxiosError) {

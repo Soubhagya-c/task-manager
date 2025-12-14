@@ -3,13 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from backend.app.api.routes import auth_routes, user_routes
+from app.api.routes import auth_routes, user_routes, tasks_routes
 from app.database.session import engine
 from app.database import models
 from app.utils.response import error_response
 from fastapi.exceptions import RequestValidationError
 from app.core.exceptions import validation_exception_handler
-from backend.app.api.routes import tasks_routes
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -28,9 +27,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth_routes.router, prefix="/auth", tags=["Auth"])
-app.include_router(user_routes.router, prefix="/users", tags=["Users"])
-app.include_router(tasks_routes.router, prefix="/tasks", tags=["Tasks"])
+app.include_router(auth_routes.router, prefix="/api/auth", tags=["Auth"])
+app.include_router(user_routes.router, prefix="/api/users", tags=["Users"])
+app.include_router(tasks_routes.router, prefix="/api/tasks", tags=["Tasks"])
 
 
 @app.get("/")

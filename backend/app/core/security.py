@@ -12,12 +12,15 @@ pwd_context = CryptContext(
 )
 
 def hash_password(password: str) -> str:
-    # bcrypt max = 72 bytes
-    password = password[:72]
+    # passlib handles UTF-8 encoding internally; no need to decode
+    if len(password.encode("utf-8")) > 72:
+        # truncate to 72 bytes safely if password is too long
+        password = password.encode("utf-8")[:72].decode("utf-8", "ignore")
     return pwd_context.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    plain_password = plain_password[:72]
+    if len(plain_password.encode("utf-8")) > 72:
+        plain_password = plain_password.encode("utf-8")[:72].decode("utf-8", "ignore")
     return pwd_context.verify(plain_password, hashed_password)
 
 def create_access_token(

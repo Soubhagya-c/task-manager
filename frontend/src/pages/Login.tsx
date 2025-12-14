@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { AxiosError } from "axios";
 import { getErrorMessage } from "../utils/handleApiError";
 import Navbar from "../components/Navbar";
+import { showSuccess } from "../utils/toast";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function Login() {
     try {
       const res = await loginUser({ email, password });
       login(res);
+      showSuccess("Login successful");
       navigate("/dashboard");
     } catch (err: unknown) {
       if (err instanceof AxiosError) {

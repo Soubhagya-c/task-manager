@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.session import get_db
 from app.database.models import User
-from backend.app.schemas.user_schema import UserRead, LoginRequest
+from app.schemas.user_schema import UserRead, LoginRequest
 from app.core.security import hash_password, verify_password, create_access_token, create_refresh_token
 from fastapi import Body
 from jose import jwt, JWTError

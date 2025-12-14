@@ -61,6 +61,11 @@ cd task-manager
 ```
 ### Environment Set up 
 
+# DATABASE
+```
+CREATE DATABASE dbname;
+```
+
 # Backend
 SECRET_KEY=your_secret_key
 ALGORITHM=HS256
@@ -82,4 +87,17 @@ npm install
 npm run dev
 ```
 
+# DOCKER
+
+## START
+
+docker compose up --build
+
+## STOP
+
+docker compose down
+
+## REBUILD CONTAINER
+
+docker compose up --build --force-recreate
 

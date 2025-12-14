@@ -32,6 +32,7 @@ const Dashboard: React.FC = () => {
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [includeDeleted, setIncludeDeleted] = useState(false);
 
   const [page, setPage] = useState(1);
   const [limit] = useState(3);
@@ -40,7 +41,7 @@ const Dashboard: React.FC = () => {
   const fetchTasks = async () => {
     try {
       const res = await API.get(
-        `/tasks?page=${page}&limit=${limit}&status=${statusFilter}`
+        `/tasks?page=${page}&limit=${limit}&status=${statusFilter}&includeDeleted=${includeDeleted}`
       );
 
       setTasks(res.data.data);
@@ -63,7 +64,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     fetchTasks();
     fetchProfile();
-  }, [page, statusFilter]);
+  }, [page, statusFilter, includeDeleted]);
 
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -161,6 +162,14 @@ const Dashboard: React.FC = () => {
             <option value="pending">Pending</option>
             <option value="completed">Completed</option>
           </select>
+          <label className="flex items-center gap-1">
+          <input
+            type="checkbox"
+            checked={includeDeleted}
+            onChange={(e) => setIncludeDeleted(e.target.checked)}
+          />
+          Include Deleted
+        </label>
         </div>
 
         <TaskList
