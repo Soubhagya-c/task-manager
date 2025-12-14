@@ -13,7 +13,6 @@ export interface RegisterPayload {
 
 export const loginUser = async (loginPayload: LoginPayload) => {
   const res = await API.post("/auth/login", loginPayload);
-  localStorage.setItem("token", res.data.access_token);
   return res.data;
 };
 

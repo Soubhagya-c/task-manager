@@ -2,6 +2,9 @@ import { useState } from "react";
 import { registerUser } from "../api/auth";
 import Input from "../components/Input";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import { getErrorMessage } from "../utils/handleApiError";
+import Navbar from "../components/Navbar";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -19,12 +22,18 @@ export default function Register() {
       await registerUser({ name, email, password });
       alert("Registration successful");
       navigate("/login");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        setError(getErrorMessage(err));
+      } else {
+        setError("Registration failed");
+      }
     }
   };
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
@@ -75,5 +84,6 @@ export default function Register() {
         </p>
       </form>
     </div>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 class UserRead(BaseModel):
@@ -16,3 +17,8 @@ class UserOut(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+class UserUpdate(BaseModel):
+	name: Optional[str] = None
+	email: Optional[EmailStr] = None
+	password: Optional[str] = None

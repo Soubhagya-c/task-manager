@@ -1,27 +1,58 @@
+import React from "react";
+
 interface InputProps {
   label: string;
-  type?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  type?: "text" | "password" | "email";
+  textarea?: boolean;
+  selectOptions?: { value: string; label: string }[];
+  required?: boolean;
 }
 
-export default function Input({
+const Input: React.FC<InputProps> = ({
   label,
-  type = "text",
   value,
   onChange,
-}: InputProps) {
+  type = "text",
+  textarea = false,
+  selectOptions,
+  required = false,
+}) => {
   return (
-    <div className="mb-4">
-      <label className="block text-sm font-medium mb-1">
-        {label}
-      </label>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
-      />
+    <div className="mb-2">
+      <label className="block mb-1 font-semibold">{label}</label>
+      {textarea ? (
+        <textarea
+          value={value}
+          onChange={onChange}
+          className="w-full p-2 border rounded"
+          required={required}
+        />
+      ) : selectOptions ? (
+        <select
+          value={value}
+          onChange={onChange}
+          className="w-full p-2 border rounded"
+          required={required}
+        >
+          {selectOptions.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type}
+          value={value}
+          onChange={onChange}
+          className="w-full p-2 border rounded"
+          required={required}
+        />
+      )}
     </div>
   );
-}
+};
+
+export default Input;

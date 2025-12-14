@@ -3,11 +3,13 @@ from datetime import datetime
 from typing import Optional
 from app.schemas.user import UserOut
 from typing import List
+from app.database.models import TaskStatus
 
 class TaskBase(BaseModel):
     title: str
     description: str
-    completed: Optional[bool] = False
+    status: Optional[TaskStatus] = TaskStatus.pending
+    is_deleted: Optional[bool] = False
 
 class TaskCreate(TaskBase):
     pass
@@ -25,3 +27,15 @@ class TaskListResponse(BaseModel):
     success: bool
     message: str
     data: Optional[List[TaskRead]] = None
+
+from pydantic import BaseModel
+from typing import List
+
+class PaginatedTasks(BaseModel):
+    data: List[TaskRead]
+    page: int
+    limit: int
+    total: int
+    hasNext: bool
+    hasPrev: bool
+

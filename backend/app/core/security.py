@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from jose import jwt, JWTError
+from jose import jwt
 from passlib.context import CryptContext
 from app.core.config import settings
 from fastapi.security import OAuth2PasswordBearer
@@ -27,6 +27,27 @@ def create_access_token(
 ):
     expire = datetime.utcnow() + timedelta(
         minutes=expires_delta or settings.ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+
+    payload = {
+        "sub": email,
+        "email": email,
+        "exp": expire
+    }
+
+    return jwt.encode(
+        payload,
+        settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM
+    )
+
+def create_refresh_token(
+    *,
+    email: str,
+    expires_delta: int | None = None
+):
+    expire = datetime.utcnow() + timedelta(
+        days=expires_delta or settings.REFRESH_TOKEN_EXPIRE_DAYS
     )
 
     payload = {

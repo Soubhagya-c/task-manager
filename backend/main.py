@@ -7,10 +7,17 @@ from app.api.routes import auth, users, tasks
 from app.database.session import engine
 from app.database import models
 from app.utils.response import error_response
+from fastapi.exceptions import RequestValidationError
+from app.core.exceptions import validation_exception_handler
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Scalable Web App Backend")
+
+app.add_exception_handler(
+    RequestValidationError,
+    validation_exception_handler
+)
 
 app.add_middleware(
     CORSMiddleware,

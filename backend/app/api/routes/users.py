@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.session import get_db
 from app.database import models
-from app.schemas.user import UserRead, UserOut
+from app.schemas.user import UserRead, UserOut, UserUpdate
 from app.dependencies import get_current_user
 from app.core.security import hash_password
 from typing import List
@@ -23,10 +23,19 @@ def create_user(payload: UserRead, db: Session = Depends(get_db)):
 def list_users(db: Session = Depends(get_db)):
     return db.query(models.User).all()
 
-@router.get("/profile")
+@router.get("/profile", response_model=UserOut)
 def get_profile(current_user: models.User = Depends(get_current_user)):
-    return {
-        "id": current_user.id,
-        "username": current_user.name,
-        "email": current_user.email,
-    }
+    return current_user
+
+@router.put("/profile", response_model=UserOut)
+def update_profile(payload: UserUpdate, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
+    if not payload.name:
+        raise HTTPException(
+            status_code=401,
+            detail="Name is required"
+        )
+    user.name = payload.name
+    db.commit()
+    db.refresh(user)
+    return user
+
