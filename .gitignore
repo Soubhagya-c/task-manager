@@ -1,0 +1,26 @@
+# --------------------
+# Node / React
+# --------------------
+frontend/node_modules
+frontend/dist
+frontend/.env
+frontend/.env.*
+
+# --------------------
+# Python / FastAPI
+# --------------------
+backend/venv
+backend/__pycache__
+backend/**/*.pyc
+backend/.env
+backend/.env.*
+
+# --------------------
+# General
+# --------------------
+.DS_Store
+.env
+.env.*
+.vscode/
+soubhagya
+soubhagya.pub
